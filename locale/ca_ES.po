@@ -1,0 +1,39 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:carrier.manifest:"
+msgid "ASM Manifest service is not available."
+msgstr "No està disponible el Manifest de ASM"
+
+msgctxt "error:stock.shipment.out:"
+msgid "ASM not accept zip \"%(zip)s\""
+msgstr "ASM no accepta el codi postal \"%(zip)s\"."
+
+msgctxt "error:stock.shipment.out:"
+msgid "Add a office ASM to delivery or change service"
+msgstr "Afegeix una oficina de ASM en l'adreça d'entrega o canvia de servei."
+
+msgctxt "error:stock.shipment.out:"
+msgid "Add country in shipment \"%(name)s\" delivery address"
+msgstr "Afegeix un pais en l'adreça d'enviament de l'albarà \"%(name)s\""
+
+msgctxt "error:stock.shipment.out:"
+msgid "Not available \"%(name)s\" label from ASM"
+msgstr "No està disponible l'etiqueta \"%(name)s\" de ASM."
+
+msgctxt "error:stock.shipment.out:"
+msgid "Not send shipment %(name)s"
+msgstr "No s'ha enviat l'albarà %(name)s"
+
+msgctxt "error:stock.shipment.out:"
+msgid "Not send shipment %(name)s. %(error)s"
+msgstr "No s'ha enviat l'albarà %(name)s. %(error)s"
+
+msgctxt "error:stock.shipment.out:"
+msgid "Select a service or default service in ASM API"
+msgstr "Selecciona un servei o un servei per defecte a la API de ASM."
+
+msgctxt "error:stock.shipment.out:"
+msgid "Shipment \"%(name)s\" not have price and send cashondelivery"
+msgstr "L'albarà \"%(name)s\" no disposa de preus i es contrarembolsament."

@@ -4,7 +4,7 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:carrier.manifest:"
 msgid "ASM Manifest service is not available."
-msgstr "No està disponible el Manifest de ASM"
+msgstr "No està disponible el Manifest de ASM."
 
 msgctxt "error:stock.shipment.out:"
 msgid "ASM not accept zip \"%(zip)s\""
@@ -16,7 +16,7 @@ msgstr "Afegeix una oficina de ASM en l'adreça d'entrega o canvia de servei."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Add country in shipment \"%(name)s\" delivery address"
-msgstr "Afegeix un pais en l'adreça d'enviament de l'albarà \"%(name)s\""
+msgstr "Afegeix un pais en l'adreça d'enviament de l'albarà \"%(name)s\"."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Not available \"%(name)s\" label from ASM"
@@ -24,11 +24,11 @@ msgstr "No està disponible l'etiqueta \"%(name)s\" de ASM."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Not send shipment %(name)s"
-msgstr "No s'ha enviat l'albarà %(name)s"
+msgstr "No s'ha enviat l'albarà %(name)s."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Not send shipment %(name)s. %(error)s"
-msgstr "No s'ha enviat l'albarà %(name)s. %(error)s"
+msgstr "No s'ha enviat l'albarà %(name)s. %(error)s."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Select a service or default service in ASM API"

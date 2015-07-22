@@ -25,15 +25,15 @@ msgstr "No se dispone la etiqueta \"%(name)s\" de ASM."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Not send shipment %(name)s"
-msgstr "No se ha enviado el albarán %(name)s"
+msgstr "No se ha enviado el albarán %(name)s."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Not send shipment %(name)s. %(error)s"
-msgstr "No se ha enviado el albarán %(name)s. %(error)s"
+msgstr "No se ha enviado el albarán %(name)s. %(error)s."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Select a service or default service in ASM API"
-msgstr "Seleccione un servicio o un servicio por defecto en la API de ASM"
+msgstr "Seleccione un servicio o un servicio por defecto en la API de ASM."
 
 msgctxt "error:stock.shipment.out:"
 msgid "Shipment \"%(name)s\" not have price and send cashondelivery"

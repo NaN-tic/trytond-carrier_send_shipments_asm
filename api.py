@@ -4,14 +4,14 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta
 from trytond.pyson import Eval
-
 import logging
 
 try:
     from asm.picking import *
 except ImportError:
+    logger = logging.getLogger(__name__)
     message = 'Install ASM from Pypi: pip install asm'
-    logging.getLogger('asm').error(message)
+    logger.error(message)
     raise Exception(message)
 
 __all__ = ['CarrierApi']

@@ -13,6 +13,8 @@ import tempfile
 __all__ = ['ShipmentOut']
 __metaclass__ = PoolMeta
 
+logger = logging.getLogger(__name__)
+
 
 class ShipmentOut:
     __name__ = 'stock.shipment.out'
@@ -179,11 +181,11 @@ class ShipmentOut:
                         'carrier_send_date': ShipmentOut.get_carrier_date(),
                         'carrier_send_employee': ShipmentOut.get_carrier_employee() or None,
                         })
-                    logging.getLogger('asm').info(
+                    logger.info(
                         'Send shipment %s' % (shipment.code))
                     references.append(shipment.code)
                 else:
-                    logging.getLogger('asm').error(
+                    logger.error(
                         'Not send shipment %s.' % (shipment.code))
 
                 if label:
@@ -191,7 +193,7 @@ class ShipmentOut:
                             prefix='%s-asm-%s-' % (dbname, reference),
                             suffix='.pdf', delete=False) as temp:
                         temp.write(decodestring(label))
-                    logging.getLogger('asm').info(
+                    logger.info(
                         'Generated tmp label %s' % (temp.name))
                     temp.close()
                     labels.append(temp.name)
@@ -200,14 +202,14 @@ class ShipmentOut:
                             'name': shipment.rec_name,
                             }, raise_exception=False)
                     errors.append(message)
-                    logging.getLogger('asm').error(message)
+                    logger.error(message)
 
                 if error:
                     message = self.raise_user_error('asm_not_send_error', {
                             'name': shipment.rec_name,
                             'error': error,
                             }, raise_exception=False)
-                    logging.getLogger('asm').error(message)
+                    logger.error(message)
                     errors.append(message)
 
         return references, labels, errors
@@ -224,7 +226,7 @@ class ShipmentOut:
         with Picking(api.username, api.debug) as picking_api:
             for shipment in shipments:
                 if not shipment.carrier_tracking_ref:
-                    logging.getLogger('carrier_send_shipment_asm').error(
+                    logger.error(
                         'Shipment %s has not been sent by ASM.'
                         % (shipment.code))
                     continue
@@ -236,7 +238,7 @@ class ShipmentOut:
                 label = picking_api.label(data)
 
                 if not label:
-                    logging.getLogger('asm').error(
+                    logger.error(
                         'Label for shipment %s is not available from ASM.'
                         % shipment.code)
                     continue
@@ -244,7 +246,7 @@ class ShipmentOut:
                         prefix='%s-asm-%s-' % (dbname, reference),
                         suffix='.pdf', delete=False) as temp:
                     temp.write(decodestring(label))
-                logging.getLogger('asm').info(
+                logger.info(
                     'Generated tmp label %s' % (temp.name))
                 temp.close()
                 labels.append(temp.name)

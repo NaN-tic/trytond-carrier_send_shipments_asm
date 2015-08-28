@@ -48,7 +48,7 @@ class ShipmentOut:
             packages = 1
 
         remitente_address = shipment.warehouse.address or shipment.company.party.addresses[0]
-        
+
         if api.reference_origin and hasattr(shipment, 'origin'):
             code = shipment.origin and shipment.origin.rec_name or shipment.code
         else:
@@ -59,16 +59,16 @@ class ShipmentOut:
             notes = '%s\n' % shipment.carrier_notes
 
         data = {}
-        #~ data['portes'] = 
+        #~ data['portes'] =
         data['bultos'] = packages
-        #~ data['volumen'] = 
-        #~ data['declarado'] = 
-        #~ data['dninob'] = 
-        #~ data['fechaentrega'] = 
-        #~ data['retorno'] = 
-        #~ data['pod'] = 
-        #~ data['podobligatorio'] = 
-        #~ data['remite_plaza'] = 
+        #~ data['volumen'] =
+        #~ data['declarado'] =
+        #~ data['dninob'] =
+        #~ data['fechaentrega'] =
+        #~ data['retorno'] =
+        #~ data['pod'] =
+        #~ data['podobligatorio'] =
+        #~ data['remite_plaza'] =
         data['remite_nombre'] = shipment.company.party.name
         data['remite_direccion'] = unaccent(remitente_address.street)
         data['remite_poblacion'] = unaccent(remitente_address.city)
@@ -76,13 +76,13 @@ class ShipmentOut:
         data['remite_pais'] = remitente_address.country and remitente_address.country.code
         data['remite_cp'] = remitente_address.zip
         data['remite_telefono'] = remitente_address.phone or shipment.company.party.get_mechanism('phone')
-        #~ data['remite_movil'] = 
+        #~ data['remite_movil'] =
         data['remite_email'] = remitente_address.email or shipment.company.party.get_mechanism('email')
-        #~ data['remite_departamento'] = 
+        #~ data['remite_departamento'] =
         data['remite_nif'] = shipment.company.party.vat_number
-        #~ data['remite_observaciones'] = 
-        #~ data['destinatario_codigo'] = 
-        #~ data['destinatario_plaza'] = 
+        #~ data['remite_observaciones'] =
+        #~ data['destinatario_codigo'] =
+        #~ data['destinatario_plaza'] =
         data['destinatario_nombre'] = unaccent(shipment.customer.name)
         data['destinatario_direccion'] = unaccent(shipment.delivery_address.street)
         data['destinatario_poblacion'] = unaccent(shipment.delivery_address.city)
@@ -94,19 +94,19 @@ class ShipmentOut:
         data['destinatario_email'] = shipment.delivery_address.email or shipment.customer.get_mechanism('email')
         data['destinatario_observaciones'] = unaccent(notes)
         data['destinatario_att'] = unaccent(remitente_address.name if remitente_address.name else shipment.customer.name)
-        #~ data['destinatario_departamento'] = 
-        #~ data['destinatario_nif'] = 
+        #~ data['destinatario_departamento'] =
+        #~ data['destinatario_nif'] =
         data['referencia_c'] = code
         #~ data['referencia_0'] = '12345'
-        #~ data['importes_debido'] = 
-        #~ data['seguro'] = 
-        #~ data['seguro_descripcion'] = 
-        #~ data['seguro_importe'] = 
-        #~ data['etiqueta'] = 
-        #~ data['etiqueta_devolucion'] = 
-        #~ data['cliente_codigo'] = 
-        #~ data['cliente_plaza'] = 
-        #~ data['cliente_agente'] = 
+        #~ data['importes_debido'] =
+        #~ data['seguro'] =
+        #~ data['seguro_descripcion'] =
+        #~ data['seguro_importe'] =
+        #~ data['etiqueta'] =
+        #~ data['etiqueta_devolucion'] =
+        #~ data['cliente_codigo'] =
+        #~ data['cliente_plaza'] =
+        #~ data['cliente_agente'] =
 
         asm_service = asm_services().get(service.code)
         if asm_service:

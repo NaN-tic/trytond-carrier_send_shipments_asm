@@ -86,7 +86,7 @@ class ShipmentOut:
         data['destinatario_nombre'] = unaccent(shipment.customer.name)
         data['destinatario_direccion'] = unaccent(shipment.delivery_address.street)
         data['destinatario_poblacion'] = unaccent(shipment.delivery_address.city)
-        data['destinatario_provincia'] = shipment.delivery_address.subdivision and shipment.delivery_address.subdivision.name or ''
+        data['destinatario_provincia'] = shipment.delivery_address.subdivision and unaccent(shipment.delivery_address.subdivision.name) or ''
         data['destinatario_pais'] = shipment.delivery_address.country and shipment.delivery_address.country.code or ''
         data['destinatario_cp'] = shipment.delivery_address.zip
         data['destinatario_telefono'] = shipment.delivery_address.phone or shipment.customer.get_mechanism('phone')

@@ -74,7 +74,7 @@ class ShipmentOut:
         data['remite_nombre'] = shipment.company.party.name
         data['remite_direccion'] = unaccent(remitente_address.street)
         data['remite_poblacion'] = unaccent(remitente_address.city)
-        data['remite_provincia'] = remitente_address.subdivision and remitente_address.subdivision.name or ''
+        data['remite_provincia'] = remitente_address.subdivision and unaccent(remitente_address.subdivision.name) or ''
         data['remite_pais'] = remitente_address.country and remitente_address.country.code
         data['remite_cp'] = remitente_address.zip
         data['remite_telefono'] = remitente_address.phone or shipment.company.party.get_mechanism('phone')

@@ -126,8 +126,6 @@ class ShipmentOut:
                 weight = 1
             if api.weight_api_unit:
                 if shipment.weight_uom:
-                    print shipment.weight_uom
-                    print api.weight_api_unit
                     weight = Uom.compute_qty(
                         shipment.weight_uom, weight, api.weight_api_unit)
                 elif api.weight_unit:

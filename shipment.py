@@ -45,6 +45,8 @@ class ShipmentOut:
         :param weight: bol
         Return data
         '''
+        Uom = Pool().get('product.uom')
+
         packages = shipment.number_packages
         if not packages or packages == 0:
             packages = 1
@@ -119,10 +121,19 @@ class ShipmentOut:
             data['importes_reembolso'] = price
 
         if weight and hasattr(shipment, 'weight_func'):
-            weight = str(shipment.weight_func)
-            if weight == '0.0':
-                weight = '1'
-            data['peso'] = weight
+            weight = shipment.weight_func
+            if weight == 0:
+                weight = 1
+            if api.weight_api_unit:
+                if shipment.weight_uom:
+                    print shipment.weight_uom
+                    print api.weight_api_unit
+                    weight = Uom.compute_qty(
+                        shipment.weight_uom, weight, api.weight_api_unit)
+                elif api.weight_unit:
+                    weight = Uom.compute_qty(
+                        api.weight_unit, weight, api.weight_api_unit)
+            data['peso'] = str(weight)
 
         return data
 

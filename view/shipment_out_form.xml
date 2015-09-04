@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- This file is part carrier_send_shipments_asm module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/notebook/page[@id='carrier-delivery']/field[@name='carrier_notes']" position="after">
+        <label name="asm_return"/>
+        <field name="asm_return"/>
+    </xpath>
+</data>

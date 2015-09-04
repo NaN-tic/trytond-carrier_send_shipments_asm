@@ -2,6 +2,8 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.pool import Pool, PoolMeta
+from trytond.model import fields
+from trytond.pyson import Eval, Equal
 from trytond.transaction import Transaction
 from asm.picking import Picking
 from asm.utils import services as asm_services
@@ -16,6 +18,11 @@ __metaclass__ = PoolMeta
 
 class ShipmentOut:
     __name__ = 'stock.shipment.out'
+    asm_return = fields.Boolean('ASM Return',
+        states={
+            'readonly': Equal(Eval('state'), 'done'),
+            },
+        help='Active return when send API shipment')
 
     @classmethod
     def __setup__(cls):
@@ -67,7 +74,7 @@ class ShipmentOut:
         #~ data['declarado'] =
         #~ data['dninob'] =
         #~ data['fechaentrega'] =
-        #~ data['retorno'] =
+        data['retorno'] = '1' if shipment.asm_return else '0'
         #~ data['pod'] =
         #~ data['podobligatorio'] =
         #~ data['remite_plaza'] =

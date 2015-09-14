@@ -37,3 +37,11 @@ msgstr "Selecciona un servei o un servei per defecte a la API de ASM."
 msgctxt "error:stock.shipment.out:"
 msgid "Shipment \"%(name)s\" not have price and send cashondelivery"
 msgstr "L'albarà \"%(name)s\" no disposa de preus i es contrarembolsament."
+
+msgctxt "field:stock.shipment.out,asm_return:"
+msgid "ASM Return"
+msgstr "Retorn ASM"
+
+msgctxt "help:stock.shipment.out,asm_return:"
+msgid "Active return when send API shipment"
+msgstr "Activar retorn quan s'envia l'albarà via API."

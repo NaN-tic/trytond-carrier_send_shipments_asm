@@ -52,7 +52,9 @@ class ShipmentOut:
         :param weight: bol
         Return data
         '''
-        Uom = Pool().get('product.uom')
+        pool = Pool()
+        Uom = pool.get('product.uom')
+        Date = pool.get('ir.date')
 
         packages = shipment.number_packages
         if not packages or packages == 0:
@@ -70,6 +72,7 @@ class ShipmentOut:
             notes = '%s\n' % shipment.carrier_notes
 
         data = {}
+        data['today'] = Date.today()
         #~ data['portes'] =
         data['bultos'] = packages
         #~ data['volumen'] =

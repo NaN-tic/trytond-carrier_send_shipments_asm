@@ -93,7 +93,7 @@ class ShipmentOut:
         #~ data['remite_movil'] =
         data['remite_email'] = remitente_address.email or shipment.company.party.get_mechanism('email')
         #~ data['remite_departamento'] =
-        data['remite_nif'] = shipment.company.party.vat_number
+        data['remite_nif'] = shipment.company.party.vat_code or shipment.company.party.identifier_code
         #~ data['remite_observaciones'] =
         #~ data['destinatario_codigo'] =
         #~ data['destinatario_plaza'] =

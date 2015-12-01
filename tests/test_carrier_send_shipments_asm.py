@@ -1,32 +1,18 @@
-#!/usr/bin/env python
 # This file is part of the carrier_send_shipments_asm module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 import unittest
 import trytond.tests.test_tryton
-from trytond.tests.test_tryton import test_view, test_depends
+from trytond.tests.test_tryton import ModuleTestCase
 
 
-class CarrierSendShipmentsASMTestCase(unittest.TestCase):
-    'Test Carrier Send Shipments ASM module'
-
-    def setUp(self):
-        trytond.tests.test_tryton.install_module('carrier_send_shipments_asm')
-
-    def test0005views(self):
-        'Test views'
-        test_view('carrier_send_shipments_asm')
-
-    def test0006depends(self):
-        'Test depends'
-        test_depends()
+class CarrierSendShipmentsAsmTestCase(ModuleTestCase):
+    'Test Carrier Send Shipments Asm module'
+    module = 'carrier_send_shipments_asm'
 
 
 def suite():
     suite = trytond.tests.test_tryton.suite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        CarrierSendShipmentsASMTestCase))
+        CarrierSendShipmentsAsmTestCase))
     return suite
-
-if __name__ == '__main__':
-    unittest.TextTestRunner(verbosity=2).run(suite())

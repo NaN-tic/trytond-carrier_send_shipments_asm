@@ -21,20 +21,16 @@ class CarrierApi:
 
     @classmethod
     def get_carrier_app(cls):
-        '''
-        Add Carrier ASM APP
-        '''
+        'Add Carrier ASM APP'
         res = super(CarrierApi, cls).get_carrier_app()
         res.append(('asm', 'ASM'))
         return res
 
-    def test_asm(self, api):
-        '''
-        Test ASM connection
-        :param api: obj
-        '''
+    @classmethod
+    def test_asm(cls, api):
+        'Test ASM connection'
         message = 'Connection unknown result'
 
         with API(api.username, api.debug) as asm_api:
             message = asm_api.test_connection()
-        self.raise_user_error(message)
+        cls.raise_user_error(message)

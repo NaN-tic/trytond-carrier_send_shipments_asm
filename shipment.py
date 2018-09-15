@@ -17,8 +17,7 @@ __all__ = ['ShipmentOut']
 logger = logging.getLogger(__name__)
 
 
-class ShipmentOut:
-    __metaclass__ = PoolMeta
+class ShipmentOut(metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
     asm_return = fields.Boolean('ASM Return',
         states={

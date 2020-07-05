@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data grouped="1">
+        <record model="ir.message" id="msg_asm_test_connection">
+            <field name="text">%(message)s</field>
+        </record>
+        <record model="ir.message" id="msg_asm_add_services">
+            <field name="text">Select a service or default service in ASM API</field>
+        </record>
+        <record model="ir.message" id="msg_asm_not_country">
+            <field name="text">Add country in shipment "%(name)s" delivery address</field>
+        </record>
+        <record model="ir.message" id="msg_asm_not_price">
+            <field name="text">Shipment "%(name)s" not have price and send cashondelivery</field>
+        </record>
+        <record model="ir.message" id="msg_asm_error_zip">
+            <field name="text">ASM not accept zip "%(zip)s"</field>
+        </record>
+        <record model="ir.message" id="msg_asm_not_send">
+            <field name="text">Not send shipment %(name)s</field>
+        </record>
+        <record model="ir.message" id="msg_asm_not_send_error">
+            <field name="text">Not send shipment %(name)s. %(error)s</field>
+        </record>
+          <record model="ir.message" id="msg_asm_not_label">
+            <field name="text">Not available "%(name)s" label from ASM</field>
+        </record>
+        <record model="ir.message" id="msg_asm_add_oficina">
+            <field name="text">Add a office ASM to delivery or change service</field>
+        </record>
+        <record model="ir.message" id="msg_asm_not_manifest">
+            <field name="text">ASM Manifest service is not available.</field>
+        </record>
+    </data>
+</tryton>

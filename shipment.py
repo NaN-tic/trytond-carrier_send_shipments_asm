@@ -5,6 +5,8 @@ from trytond.pool import Pool, PoolMeta
 from trytond.model import fields
 from trytond.pyson import Eval, Equal
 from trytond.transaction import Transaction
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 from asm.picking import Picking
 from asm.utils import services as asm_services
 from trytond.modules.carrier_send_shipments.tools import unaccent
@@ -24,21 +26,6 @@ class ShipmentOut(metaclass=PoolMeta):
             'readonly': Equal(Eval('state'), 'done'),
             },
         help='Active return when send API shipment')
-
-    @classmethod
-    def __setup__(cls):
-        super(ShipmentOut, cls).__setup__()
-        cls._error_messages.update({
-            'asm_add_services': 'Select a service or default service in ASM API',
-            'asm_not_country': 'Add country in shipment "%(name)s" delivery address',
-            'asm_not_price': 'Shipment "%(name)s" not have price and send '
-                'cashondelivery',
-            'asm_error_zip': 'ASM not accept zip "%(zip)s"',
-            'asm_not_send': 'Not send shipment %(name)s',
-            'asm_not_send_error': 'Not send shipment %(name)s. %(error)s',
-            'asm_not_label': 'Not available "%(name)s" label from ASM',
-            'asm_add_oficina': 'Add a office ASM to delivery or change service',
-            })
 
     @staticmethod
     def asm_picking_data(api, shipment, service, price=None, weight=False):
@@ -167,14 +154,12 @@ class ShipmentOut(metaclass=PoolMeta):
             for shipment in shipments:
                 service = shipment.carrier_service or shipment.carrier.service or default_service
                 if not service:
-                    message = self.raise_user_error('asm_add_services', {},
-                        raise_exception=False)
+                    message = gettext('carrier_send_shipments_asm.asm_add_services')
                     errors.append(message)
                     continue
 
                 if not shipment.delivery_address.country:
-                    message = self.raise_user_error('asm_not_country', {},
-                        raise_exception=False)
+                    message = gettext('carrier_send_shipments_asm.asm_not_country')
                     errors.append(message)
                     continue
 
@@ -182,9 +167,8 @@ class ShipmentOut(metaclass=PoolMeta):
                 if shipment.carrier_cashondelivery:
                     price = ShipmentOut.get_price_ondelivery_shipment_out(shipment)
                     if not price:
-                        message = self.raise_user_error('asm_not_price', {
-                                'name': shipment.rec_name,
-                                }, raise_exception=False)
+                        message = gettext('carrier_send_shipments_asm.asm_not_price',
+                            name=shipment.rec_name)
                         errors.append(message)
                         continue
 
@@ -216,17 +200,15 @@ class ShipmentOut(metaclass=PoolMeta):
                     temp.close()
                     labels.append(temp.name)
                 else:
-                    message = self.raise_user_error('asm_not_label', {
-                            'name': shipment.rec_name,
-                            }, raise_exception=False)
+                    message = gettext('carrier_send_shipments_asm.asm_not_label',
+                        name=shipment.rec_name)
                     errors.append(message)
                     logger.error(message)
 
                 if error:
-                    message = self.raise_user_error('asm_not_send_error', {
-                            'name': shipment.rec_name,
-                            'error': error,
-                            }, raise_exception=False)
+                    message = gettext('carrier_send_shipments_asm.asm_not_send_error',
+                        name=shipment.rec_name,
+                        error=error)
                     logger.error(message)
                     errors.append(message)
 

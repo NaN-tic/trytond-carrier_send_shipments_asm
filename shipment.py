@@ -10,7 +10,7 @@ from trytond.exceptions import UserError
 from asm.picking import Picking
 from asm.utils import services as asm_services
 from trytond.modules.carrier_send_shipments.tools import unaccent
-from base64 import decodestring
+from base64 import decodebytes
 import logging
 import tempfile
 
@@ -49,9 +49,9 @@ class ShipmentOut(metaclass=PoolMeta):
         remitente_address = shipment.warehouse.address or shipment.company.party.addresses[0]
 
         if api.reference_origin and hasattr(shipment, 'origin'):
-            code = shipment.origin and shipment.origin.rec_name or shipment.code
+            code = shipment.origin and shipment.origin.rec_name or shipment.number
         else:
-            code = shipment.code
+            code = shipment.number
 
         notes = ''
         if shipment.carrier_notes:
@@ -75,11 +75,11 @@ class ShipmentOut(metaclass=PoolMeta):
         data['remite_provincia'] = remitente_address.subdivision and unaccent(remitente_address.subdivision.name) or ''
         data['remite_pais'] = remitente_address.country and remitente_address.country.code
         data['remite_cp'] = remitente_address.zip
-        data['remite_telefono'] = remitente_address.phone or shipment.company.party.get_mechanism('phone')
+        data['remite_telefono'] = shipment.company.party.phone
         #~ data['remite_movil'] =
-        data['remite_email'] = remitente_address.email or shipment.company.party.get_mechanism('email')
+        data['remite_email'] = shipment.company.party.email
         #~ data['remite_departamento'] =
-        data['remite_nif'] = shipment.company.party.vat_code or shipment.company.party.identifier_code
+        data['remite_nif'] = shipment.company.party.identifier_code
         #~ data['remite_observaciones'] =
         #~ data['destinatario_codigo'] =
         #~ data['destinatario_plaza'] =
@@ -89,9 +89,9 @@ class ShipmentOut(metaclass=PoolMeta):
         data['destinatario_provincia'] = shipment.delivery_address.subdivision and unaccent(shipment.delivery_address.subdivision.name) or ''
         data['destinatario_pais'] = shipment.delivery_address.country and shipment.delivery_address.country.code or ''
         data['destinatario_cp'] = shipment.delivery_address.zip
-        data['destinatario_telefono'] = shipment.delivery_address.phone or shipment.customer.get_mechanism('phone')
-        data['destinatario_movil'] = shipment.delivery_address.mobile or shipment.customer.get_mechanism('mobile')
-        data['destinatario_email'] = shipment.delivery_address.email or shipment.customer.get_mechanism('email')
+        data['destinatario_telefono'] = shipment.customer.phone
+        data['destinatario_movil'] = shipment.customer.mobile
+        data['destinatario_email'] = shipment.customer.email
         data['destinatario_observaciones'] = unaccent(notes)
         data['destinatario_att'] = unaccent(remitente_address.name if remitente_address.name else shipment.customer.name)
         #~ data['destinatario_departamento'] =
@@ -154,12 +154,12 @@ class ShipmentOut(metaclass=PoolMeta):
             for shipment in shipments:
                 service = shipment.carrier_service or shipment.carrier.service or default_service
                 if not service:
-                    message = gettext('carrier_send_shipments_asm.asm_add_services')
+                    message = gettext('carrier_send_shipments_asm.msg_asm_add_services')
                     errors.append(message)
                     continue
 
                 if not shipment.delivery_address.country:
-                    message = gettext('carrier_send_shipments_asm.asm_not_country')
+                    message = gettext('carrier_send_shipments_asm.msg_asm_not_country')
                     errors.append(message)
                     continue
 
@@ -167,7 +167,7 @@ class ShipmentOut(metaclass=PoolMeta):
                 if shipment.carrier_cashondelivery:
                     price = ShipmentOut.get_price_ondelivery_shipment_out(shipment)
                     if not price:
-                        message = gettext('carrier_send_shipments_asm.asm_not_price',
+                        message = gettext('carrier_send_shipments_asm.msg_asm_not_price',
                             name=shipment.rec_name)
                         errors.append(message)
                         continue
@@ -184,29 +184,29 @@ class ShipmentOut(metaclass=PoolMeta):
                         'carrier_send_employee': ShipmentOut.get_carrier_employee() or None,
                         })
                     logger.info(
-                        'Send shipment %s' % (shipment.code))
-                    references.append(shipment.code)
+                        'Send shipment %s' % (shipment.number))
+                    references.append(shipment.number)
                 else:
                     logger.error(
-                        'Not send shipment %s.' % (shipment.code))
+                        'Not send shipment %s.' % (shipment.number))
 
                 if label:
                     with tempfile.NamedTemporaryFile(
                             prefix='%s-asm-%s-' % (dbname, reference),
                             suffix='.pdf', delete=False) as temp:
-                        temp.write(decodestring(label))
+                        temp.write(decodebytes(bytes(label.encode('utf-8'))))
                     logger.info(
                         'Generated tmp label %s' % (temp.name))
                     temp.close()
                     labels.append(temp.name)
                 else:
-                    message = gettext('carrier_send_shipments_asm.asm_not_label',
+                    message = gettext('carrier_send_shipments_asm.msg_asm_not_label',
                         name=shipment.rec_name)
                     errors.append(message)
                     logger.error(message)
 
                 if error:
-                    message = gettext('carrier_send_shipments_asm.asm_not_send_error',
+                    message = gettext('carrier_send_shipments_asm.msg_asm_not_send_error',
                         name=shipment.rec_name,
                         error=error)
                     logger.error(message)
@@ -228,7 +228,7 @@ class ShipmentOut(metaclass=PoolMeta):
                 if not shipment.carrier_tracking_ref:
                     logger.error(
                         'Shipment %s has not been sent by ASM.'
-                        % (shipment.code))
+                        % (shipment.number))
                     continue
 
                 reference = shipment.carrier_tracking_ref
@@ -240,16 +240,16 @@ class ShipmentOut(metaclass=PoolMeta):
                 if not label:
                     logger.error(
                         'Label for shipment %s is not available from ASM.'
-                        % shipment.code)
+                        % shipment.number)
                     continue
                 with tempfile.NamedTemporaryFile(
                         prefix='%s-asm-%s-' % (dbname, reference),
                         suffix='.pdf', delete=False) as temp:
-                    temp.write(decodestring(label))
-                logger.info(
-                    'Generated tmp label %s' % (temp.name))
+                    temp.write(decodebytes(bytes(label.encode('utf-8'))))
+                    logger.info(
+                        'Generated tmp label %s' % (temp.name))
+                    labels.append(temp.name)
                 temp.close()
-                labels.append(temp.name)
             self.write(shipments, {'carrier_printed': True})
 
         return labels

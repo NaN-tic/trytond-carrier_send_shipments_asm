@@ -224,6 +224,7 @@ class ShipmentOut(metaclass=PoolMeta):
         dbname = Transaction().database.name
 
         with Picking(api.username, timeout=api.timeout, debug=api.debug) as picking_api:
+            to_write = []
             for shipment in shipments:
                 if not shipment.carrier_tracking_ref:
                     logger.error(
@@ -250,6 +251,12 @@ class ShipmentOut(metaclass=PoolMeta):
                         'Generated tmp label %s' % (temp.name))
                     labels.append(temp.name)
                 temp.close()
-            self.write(shipments, {'carrier_printed': True})
 
+                to_write.extend(([shipment], {
+                    'carrier_printed': True,
+                    'carrier_tracking_label': fields.Binary.cast(
+                        open(temp.name, "rb").read()),
+                    }))
+            if to_write:
+                cls.write(*to_write)
         return labels
